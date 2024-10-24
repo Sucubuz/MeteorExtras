@@ -1,24 +1,21 @@
 {
   "schemaVersion": 1,
-  "id": "addon-template",
+  "id": "meteorextras",
   "version": "${version}",
-  "name": "Addon Template",
-  "description": "An addon template for Meteor Client addons.",
+  "name": "Meteor Extras",
+  "description": "Extra mods for meteor client",
   "authors": [
-    "seasnail"
+    "JuusK"
   ],
-  "contact": {
-    "repo": "https://github.com/MeteorDevelopment/meteor-addon-template"
-  },
-  "icon": "assets/template/icon.png",
+  "icon": "assets/meteorextras/icon.png",
   "environment": "client",
   "entrypoints": {
     "meteor": [
-      "com.example.addon.AddonTemplate"
+      "me.juusk.meteorextras.MeteorExtras"
     ]
   },
   "mixins": [
-    "addon-template.mixins.json"
+    "meteorextras.mixins.json"
   ],
   "custom": {
     "meteor-client:color": "225,25,25"
