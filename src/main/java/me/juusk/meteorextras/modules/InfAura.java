@@ -144,6 +144,16 @@ public class InfAura extends Module {
         .build()
     );
 
+    
+    private final Setting<Double> sleepTime = sgTargeting.add(new DoubleSetting.Builder()
+        .name("sleep-time")
+        .description("Amount of time it sleeps")
+        .defaultValue(50)
+        .min(0)
+        .sliderMax(200)
+        .build()
+    );
+
     private final Setting<Double> wallsRange = sgTargeting.add(new DoubleSetting.Builder()
         .name("walls-range")
         .description("The maximum range the entity can be attacked through walls.")
