@@ -20,6 +20,7 @@ Meteor addon that adds extra features.
 ### Modules
 - InfAura (KillAura but with infinite reach)
 - LoginCommand (Lets you send commands on login)
+- Betterflight(Flight but better)
 ## Contributing
 
 Contributions are always welcome!
