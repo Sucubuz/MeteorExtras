@@ -472,7 +472,7 @@ public class InfAura extends Module {
             mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(tempPos.x, tempPos.y, tempPos.z, true));
             if(i%4 == 0) {
                 try {
-                    Thread.sleep((50));
+                    Thread.sleep((sleepTime));
                 } catch (InterruptedException e) {
                 }
             }
