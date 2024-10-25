@@ -144,11 +144,11 @@ public class InfAura extends Module {
         .build()
     );
 
-    
-    private final Setting<Double> sleepTime = sgTargeting.add(new DoubleSetting.Builder()
+
+    private final Setting<Integer> sleepTime = sgTargeting.add(new IntSetting.Builder()
         .name("sleep-time")
         .description("Amount of time it sleeps")
-        .defaultValue(50)
+        .defaultValue(100)
         .min(0)
         .sliderMax(200)
         .build()
@@ -472,7 +472,7 @@ public class InfAura extends Module {
             mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(tempPos.x, tempPos.y, tempPos.z, true));
             if(i%4 == 0) {
                 try {
-                    Thread.sleep((sleepTime));
+                    Thread.sleep((sleepTime.get()));
                 } catch (InterruptedException e) {
                 }
             }

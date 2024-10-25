@@ -1,5 +1,6 @@
 package me.juusk.meteorextras;
 
+import me.juusk.meteorextras.modules.BetterFlight;
 import me.juusk.meteorextras.modules.InfAura;
 
 import com.mojang.logging.LogUtils;
@@ -22,6 +23,7 @@ public class MeteorExtras extends MeteorAddon {
         // Modules
         Modules.get().add(new InfAura());
         Modules.get().add(new LoginCommand());
+        Modules.get().add(new BetterFlight());
 
         // Commands
 
