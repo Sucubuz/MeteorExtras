@@ -465,17 +465,26 @@ public class InfAura extends Module {
     }
 
     public void tp(Vec3d from, Vec3d to) {
-        double distancePerBlink = perBlink.get();
-        double targetDistance = Math.ceil(from.distanceTo(to) / distancePerBlink);
-        for(int i = 1; i <= targetDistance; i++) {
-            Vec3d tempPos = from.lerp(to, i / targetDistance);
+        Vec3d playerPos = from;
+        Vec3d targetPos = to;
+        Vec3d toTarget = targetPos.subtract(from);
+
+        double distance = toTarget.length();
+
+        toTarget = toTarget.normalize();
+
+
+        toTarget = toTarget.multiply(distance - 4);
+        targetPos = playerPos.add(toTarget);
+
+        double ceiledDistance = Math.ceil(distance / perBlink.get());
+        for(int i = 1; i <= ceiledDistance; i++) {
+            Vec3d tempPos = playerPos.lerp(targetPos, i / ceiledDistance);
             mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(tempPos.x, tempPos.y, tempPos.z, true));
-            if(i%4 == 0) {
-                try {
-                    Thread.sleep((sleepTime.get()));
-                } catch (InterruptedException e) {
-                }
-            }
+
         }
+
+
+
     }
 }
