@@ -1,14 +1,9 @@
 package me.juusk.meteorextras;
 
-import me.juusk.meteorextras.modules.BetterFlight;
-import me.juusk.meteorextras.modules.InfAura;
+import me.juusk.meteorextras.modules.*;
 
 import com.mojang.logging.LogUtils;
-import me.juusk.meteorextras.modules.LoginCommand;
-import me.juusk.meteorextras.modules.ReachPlus;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
-import meteordevelopment.meteorclient.systems.hud.Hud;
-import meteordevelopment.meteorclient.systems.hud.HudGroup;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import org.slf4j.Logger;
@@ -24,8 +19,9 @@ public class MeteorExtras extends MeteorAddon {
         // Modules
         Modules.get().add(new InfAura());
         Modules.get().add(new LoginCommand());
-        Modules.get().add(new BetterFlight());
+        Modules.get().add(new FlightPlus());
         Modules.get().add(new ReachPlus());
+        Modules.get().add(new WGBypass());
 
         // Commands
 

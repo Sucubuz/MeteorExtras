@@ -20,13 +20,25 @@ Meteor addon that adds extra features.
 ### Modules
 - InfAura (KillAura but with infinite reach)
 - LoginCommand (Lets you send commands on login)
-- Betterflight (Flight but better)
+- Flight+ (Flight but better)
 - Reach+ (Infinite entity and block reach)
+- WGBypass (Lets you move in WorldGuard areas)
 ## Contributing
 
 Contributions are always welcome!
 
-See `contributing.md` for ways to get started.
+To contribute, follow the steps below:
 
-Please adhere to this project's `code of conduct`.
+### Step 1
 
+Clone the repository:
+
+``git clone https://github.com/JuusK/MeteorExtras``
+
+### Step 2
+
+Add or change the stuff you want to be changed.
+
+### Step 3
+
+Make a pull request and it will be reviewed.

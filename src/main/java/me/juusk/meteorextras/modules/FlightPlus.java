@@ -6,10 +6,9 @@ import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.orbit.EventHandler;
 import me.juusk.meteorextras.MeteorExtras;
 import meteordevelopment.meteorclient.settings.*;
-import net.minecraft.util.math.Vec3d;
 
 
-public class BetterFlight extends Module {
+public class FlightPlus extends Module {
 
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
@@ -47,11 +46,10 @@ public class BetterFlight extends Module {
         .build()
     );
 
-    public BetterFlight() {
-        super(MeteorExtras.CATEGORY, "BetterFlight", "Better meteor flight");
+    public FlightPlus() {
+        super(MeteorExtras.CATEGORY, "Flight+", "Better meteor flight");
     }
     public int tick = 0;
-    public Vec3d initialVelocity;
 
     @EventHandler
     public void onTick(TickEvent.Pre event) {
@@ -61,7 +59,6 @@ public class BetterFlight extends Module {
             double x = 0, y = tick % antiKickDelay.get() == 0 ? antiKickAmount.get() * -0.04 : 0, z = 0;
             mc.player.getAbilities().flying = false;
             mc.player.setVelocity(0, 0, 0);
-            initialVelocity = mc.player.getVelocity();
             if (mc.options.jumpKey.isPressed())
                 y = y + ySpeed.get();
             if (mc.options.sneakKey.isPressed())
