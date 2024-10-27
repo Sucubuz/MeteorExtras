@@ -1,6 +1,7 @@
 package me.juusk.meteorextras.modules;
 
 import me.juusk.meteorextras.MeteorExtras;
+import me.juusk.meteorextras.utils.ModuleUtils;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.pathing.PathManagers;
@@ -144,15 +145,6 @@ public class InfAura extends Module {
         .build()
     );
 
-
-    private final Setting<Integer> sleepTime = sgTargeting.add(new IntSetting.Builder()
-        .name("sleep-time")
-        .description("Amount of time it sleeps")
-        .defaultValue(100)
-        .min(0)
-        .sliderMax(200)
-        .build()
-    );
 
     private final Setting<Double> wallsRange = sgTargeting.add(new DoubleSetting.Builder()
         .name("walls-range")
@@ -404,11 +396,10 @@ public class InfAura extends Module {
 
     private void attack(Entity target) {
         if (rotation.get() == RotationMode.OnHit) Rotations.rotate(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body));
-
-        tp(mc.player.getPos(), target.getPos());
+        ModuleUtils.splitTeleport(mc.player.getPos(), target.getPos(), perBlink.get());
         mc.interactionManager.attackEntity(mc.player, target);
         mc.player.swingHand(Hand.MAIN_HAND);
-        tp(target.getPos(), mc.player.getPos());
+        ModuleUtils.splitTeleport(target.getPos(), mc.player.getPos(), perBlink.get());
 
         hitTimer = 0;
     }
@@ -464,27 +455,4 @@ public class InfAura extends Module {
         Both
     }
 
-    public void tp(Vec3d from, Vec3d to) {
-        Vec3d playerPos = from;
-        Vec3d targetPos = to;
-        Vec3d toTarget = targetPos.subtract(from);
-
-        double distance = toTarget.length();
-
-        toTarget = toTarget.normalize();
-
-
-        toTarget = toTarget.multiply(distance - 4);
-        targetPos = playerPos.add(toTarget);
-
-        double ceiledDistance = Math.ceil(distance / perBlink.get());
-        for(int i = 1; i <= ceiledDistance; i++) {
-            Vec3d tempPos = playerPos.lerp(targetPos, i / ceiledDistance);
-            mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(tempPos.x, tempPos.y, tempPos.z, true));
-
-        }
-
-
-
-    }
 }

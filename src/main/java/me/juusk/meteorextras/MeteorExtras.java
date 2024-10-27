@@ -5,6 +5,7 @@ import me.juusk.meteorextras.modules.InfAura;
 
 import com.mojang.logging.LogUtils;
 import me.juusk.meteorextras.modules.LoginCommand;
+import me.juusk.meteorextras.modules.ReachPlus;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
 import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.meteorclient.systems.hud.HudGroup;
@@ -24,6 +25,7 @@ public class MeteorExtras extends MeteorAddon {
         Modules.get().add(new InfAura());
         Modules.get().add(new LoginCommand());
         Modules.get().add(new BetterFlight());
+        Modules.get().add(new ReachPlus());
 
         // Commands
 
