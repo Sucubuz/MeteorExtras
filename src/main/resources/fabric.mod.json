@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "meteorextras",
-  "version": "1.0",
+  "version": "${version}",
   "name": "Meteor Extras",
   "description": "Extra mods for meteor client",
   "authors": [
