@@ -23,6 +23,7 @@ Meteor addon that adds extra features.
 - Flight+ (Flight but better)
 - Reach+ (Infinite entity and block reach)
 - WGBypass (Lets you move in WorldGuard areas)
+- AutoDrink (Automatically drinks potions)
 ## Contributing
 
 Contributions are always welcome!

@@ -49,8 +49,6 @@ public class LoginCommand extends Module {
     public void onJoin(GameJoinedEvent event) {
         if (!this.isActive()) return;
         for(String s : servers.get()) {
-            //if(Utils.getWorldName() != s) { return;
-            //} else System.out.println(Utils.getWorldName());
 
             String command = commands.get().get(index);
             if (command != null) {
