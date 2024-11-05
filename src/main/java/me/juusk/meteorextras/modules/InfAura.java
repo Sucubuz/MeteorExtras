@@ -58,8 +58,8 @@ public class InfAura extends Module {
 
     private final Setting<RotationMode> rotation = sgGeneral.add(new EnumSetting.Builder<RotationMode>()
         .name("rotate")
-        .description("Determines when you should rotate towards the target.")
-        .defaultValue(RotationMode.Always)
+        .description("Determines when you should rotate towards the target. (Not recommended)")
+        .defaultValue(RotationMode.None)
         .build()
     );
 

@@ -22,6 +22,7 @@ public class MeteorExtras extends MeteorAddon {
         Modules.get().add(new FlightPlus());
         Modules.get().add(new ReachPlus());
         Modules.get().add(new WGBypass());
+        Modules.get().add(new Prefix());
 
         // Commands
 

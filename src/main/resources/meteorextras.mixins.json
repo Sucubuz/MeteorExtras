@@ -3,9 +3,11 @@
   "package": "me.juusk.meteorextras.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
-
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "ChatUtilsAccessor"
+  ]
 }
