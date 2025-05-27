@@ -1,9 +1,11 @@
 package me.juusk.meteorextras;
 
+import me.juusk.meteorextras.commands.Coords;
 import me.juusk.meteorextras.modules.*;
 
 import com.mojang.logging.LogUtils;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
+import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import org.slf4j.Logger;
@@ -25,7 +27,7 @@ public class MeteorExtras extends MeteorAddon {
         Modules.get().add(new AutoDrink());
 
         // Commands
-
+        Commands.add(new Coords());
         // HUD
     }
 
