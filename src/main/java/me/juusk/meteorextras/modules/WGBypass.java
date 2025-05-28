@@ -32,8 +32,8 @@ public class WGBypass extends Module {
             z = Math.sin(Math.toRadians(yaw)) * hspeed;
         }
         if (mc.options.forwardKey.isPressed() || mc.options.backKey.isPressed() || mc.options.leftKey.isPressed() || mc.options.rightKey.isPressed() || mc.options.jumpKey.isPressed() || mc.options.sneakKey.isPressed()) {
-            mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX() + x, mc.player.getY() + y, mc.player.getZ() + z, false));
-            mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX() + x, mc.player.getY() - 100, mc.player.getZ() + z, true));
+            mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX() + x, mc.player.getY() + y, mc.player.getZ() + z, false, false));
+            mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX() + x, mc.player.getY() - 100, mc.player.getZ() + z, true, false));
         }
     }
     //Thanks blackout
