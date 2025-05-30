@@ -1,10 +1,17 @@
 package me.juusk.meteorextras.modules;
 
 import me.juusk.meteorextras.MeteorExtras;
+import me.juusk.meteorextras.utils.BossBarExtension;
 import meteordevelopment.meteorclient.events.entity.player.ItemUseCrosshairTargetEvent;
+import meteordevelopment.meteorclient.events.render.RenderBossBarEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.mixin.BossBarHudMixin;
+import meteordevelopment.meteorclient.mixin.InGameHudMixin;
 import meteordevelopment.meteorclient.pathing.PathManagers;
-import meteordevelopment.meteorclient.settings.*;
+import meteordevelopment.meteorclient.settings.BoolSetting;
+import meteordevelopment.meteorclient.settings.Setting;
+import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.combat.AnchorAura;
@@ -15,38 +22,27 @@ import meteordevelopment.meteorclient.systems.modules.player.AutoEat;
 import meteordevelopment.meteorclient.systems.modules.player.AutoGap;
 import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
-import meteordevelopment.meteorclient.utils.player.SlotUtils;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
-import net.minecraft.component.Component;
+import net.minecraft.client.gui.hud.BossBarHud;
+import net.minecraft.client.gui.hud.ClientBossBar;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.FoodComponent;
-import net.minecraft.component.type.PotionContentsComponent;
+import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
-import net.minecraft.item.PotionItem;
-import net.minecraft.potion.Potion;
+import net.minecraft.item.Items;
 import net.minecraft.registry.entry.RegistryEntry;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AutoDrink extends Module {
+public class AutoOminous extends Module {
+
     private static final Class<? extends Module>[] AURAS = new Class[]{KillAura.class, CrystalAura.class, AnchorAura.class, BedAura.class};
 
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
-    // General
-
-    private final Setting<List<StatusEffect>> whitelist = sgGeneral.add(new StatusEffectListSetting.Builder()
-        .name("whitelist")
-        .description("Which items to drink.")
-        .defaultValue(
-            StatusEffects.BAD_OMEN.value()
-        )
-        .build()
-    );
 
     private final Setting<Boolean> pauseAuras = sgGeneral.add(new BoolSetting.Builder()
         .name("pause-auras")
@@ -68,21 +64,38 @@ public class AutoDrink extends Module {
 
     public boolean drinking;
     private int slot, prevSlot;
-
+    public ArrayList<BossBarExtension> bossBars = new ArrayList<>();
     private final List<Class<? extends Module>> wasAura = new ArrayList<>();
     private boolean wasBaritone = false;
+    private int tick = 0;
 
-    public AutoDrink() {
-        super(MeteorExtras.CATEGORY, "AutoDrink", "Automatically drinks potions.");
+    public AutoOminous() {
+        super(MeteorExtras.CATEGORY, "AutoOminous", "Automatically drinks Ominous Bottles.");
     }
-
     @Override
     public void onDeactivate() {
         if (drinking) stopDrinking();
+        bossBars.clear();
     }
+
+    @EventHandler()
+    private void onBossBar(RenderBossBarEvent.BossText event) {
+        boolean contains = false;
+        for(BossBarExtension extension : bossBars) {
+            if(extension.uuid == event.bossBar.getUuid()) {
+                contains = true;
+            }
+        }
+        if(!contains) {
+            System.out.println("adding cause not contain");
+            bossBars.add(new BossBarExtension(event.bossBar.getUuid(), event.bossBar.getName()));
+        }
+    }
+
 
     @EventHandler(priority = EventPriority.LOW)
     private void onTick(TickEvent.Pre event) {
+        if(tick >= 20) { bossBars.clear(); tick = 0; System.out.println("clearing cause tick");}
         if (Modules.get().get(AutoGap.class).isEating()) return;
         if(Modules.get().get(AutoEat.class).eating) return;
         int slot = findSlot();
@@ -92,23 +105,9 @@ public class AutoDrink extends Module {
                 return;
             }
 
-            if (!(slot < 0) && mc.player.getInventory().getStack(slot).get(DataComponentTypes.POTION_CONTENTS) != null) {
 
-                for(StatusEffectInstance s : (mc.player.getInventory().getStack(slot).get(DataComponentTypes.POTION_CONTENTS)).getEffects()) {
-                    if(!whitelist.get().contains(s.getEffectType().value())) return;
+            changeSlot(slot);
 
-
-                    if (slot == -1) {
-                        stopDrinking();
-                        return;
-                    }
-                    // Otherwise change to the new slot
-                    else {
-                        changeSlot(slot);
-                    }
-                }
-
-            }
             drink();
         } else{
             // Try to find a valid slot
@@ -117,6 +116,7 @@ public class AutoDrink extends Module {
             // If slot was found then start eating
             if (slot != -1) startDrinking();
         }
+        tick++;
     }
 
     @EventHandler
@@ -141,7 +141,6 @@ public class AutoDrink extends Module {
             }
         }
 
-        // Pause baritone
         if (pauseBaritone.get() && PathManagers.get().isPathing() && !wasBaritone) {
             wasBaritone = true;
             PathManagers.get().pause();
@@ -192,19 +191,38 @@ public class AutoDrink extends Module {
 
     private int findSlot() {
         int slot = -1;
+
+        boolean raidActive = false;
+        for(BossBarExtension bossBar : bossBars) {
+            if(bossBar.getName().getString().toLowerCase().contains("raid")) {
+                System.out.println("raid bossbar");
+                raidActive = true;
+            }
+        }
+
+        for(StatusEffectInstance effect : mc.player.getStatusEffects()) {
+            if (effect.getEffectType() == StatusEffects.BAD_OMEN || effect.getEffectType() == StatusEffects.TRIAL_OMEN || effect.getEffectType() == StatusEffects.RAID_OMEN) {
+                raidActive = true;
+            }
+        }
+        if(raidActive) return -1;
+
+
+
+
+
         for (int i = 0; i < 9; i++) {
             Item item = mc.player.getInventory().getStack(i).getItem();
-            PotionContentsComponent potionComponent = item.getComponents().get(DataComponentTypes.POTION_CONTENTS);
-            if (potionComponent == null) continue;
+            if (item != Items.OMINOUS_BOTTLE) continue;
+
+
 
             slot = i;
         }
 
-        Item offHandItem = mc.player.getOffHandStack().getItem();
-        if (offHandItem.getComponents().get(DataComponentTypes.POTION_CONTENTS) != null && whitelist.get().contains(offHandItem))
-            slot = SlotUtils.OFFHAND;
 
         return slot;
     }
 
 }
+
