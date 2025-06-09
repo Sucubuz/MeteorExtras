@@ -24,7 +24,7 @@ public class ModuleUtils {
         double ceiledDistance = Math.ceil(distance / perBlink);
         for(int i = 1; i <= ceiledDistance; i++) {
             Vec3d tempPos = playerPos.lerp(targetPos, i / ceiledDistance);
-            MinecraftClient.getInstance().player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(tempPos.x, tempPos.y, tempPos.z, true));
+            MinecraftClient.getInstance().player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(tempPos.x, tempPos.y, tempPos.z, true, MinecraftClient.getInstance().player.horizontalCollision));
 
         }
     }

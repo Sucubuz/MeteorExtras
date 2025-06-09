@@ -1,9 +1,12 @@
 package me.juusk.meteorextras;
 
+import me.juusk.meteorextras.commands.Coords;
 import me.juusk.meteorextras.modules.*;
 
 import com.mojang.logging.LogUtils;
+import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
+import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import org.slf4j.Logger;
@@ -23,10 +26,11 @@ public class MeteorExtras extends MeteorAddon {
         Modules.get().add(new ReachPlus());
         Modules.get().add(new WGBypass());
         Modules.get().add(new AutoDrink());
+        Modules.get().add(new AutoOminous());
         Modules.get().add(new Prefix());
 
         // Commands
-
+        Commands.add(new Coords());
         // HUD
     }
 
@@ -40,8 +44,8 @@ public class MeteorExtras extends MeteorAddon {
         return "me.juusk.meteorextras";
     }
 
-    //@Override
-    //public GithubRepo getRepo() {
-        //return new GithubRepo("MeteorDevelopment", "meteor-addon-template");
-    //}
+    @Override
+    public GithubRepo getRepo() {
+        return new GithubRepo("JuusK", "MeteorExtras");
+    }
 }
